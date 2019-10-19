@@ -99,9 +99,53 @@ public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				prepareStat.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 
 		return listAcctDetails;
+	}
+
+	@Override
+	public void saveGoup(List<AccountDetails> accountDetails) {
+
+		Connection con = null;
+		PreparedStatement prepareStat = null;
+		List<AccountDetails> listAcctDetails = new ArrayList<AccountDetails>();
+		try {
+			con = dataSource.getConnection();
+			prepareStat = con.prepareStatement(
+					"INSERT INTO GROUP_ID_CONFIG (GROUPID, GLECUSTOMERID, ACCOUNTNUMBER, BRANCH)values (?,?,?,?)");
+			long groupId = System.currentTimeMillis();
+			String groupIdString = String.valueOf(groupId);
+			for (AccountDetails acctDet : accountDetails) {
+				prepareStat.setString(1, groupIdString);
+				prepareStat.setString(2, "1" + groupIdString + "1");
+				prepareStat.setString(3, acctDet.getAccountNumber());
+				prepareStat.setString(4, acctDet.getBranchCode());
+				prepareStat.addBatch();
+			}
+			int[] resultSet = prepareStat.executeBatch();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+				prepareStat.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 	}
 
 }

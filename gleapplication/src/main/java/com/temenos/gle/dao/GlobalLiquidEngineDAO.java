@@ -1,6 +1,5 @@
 package com.temenos.gle.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.temenos.gle.model.AccountDetails;
@@ -14,4 +13,6 @@ public interface GlobalLiquidEngineDAO {
 	List<AccountDetails> getAccountListByClinetName(String clinetName);
 
 	List<AccountDetails> getAccountListInGroup(String groupId);
+
+	void saveGoup(List<AccountDetails> accountList);
 }
