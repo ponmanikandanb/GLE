@@ -2,19 +2,19 @@ package com.temenos.gle.model;
 
 public class AccountDetails {
 
-	private String accoutNumber;
+	private String accountNumber;
 	private String customerName;
 	private String balance;
 	private String currency;
 	private String branchCode;
 	private String country;
 
-	public String getAccoutNumber() {
-		return accoutNumber;
+	public String getAccountNumber() {
+		return accountNumber;
 	}
 
-	public void setAccoutNumber(String accoutNumber) {
-		this.accoutNumber = accoutNumber;
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 	public String getCustomerName() {

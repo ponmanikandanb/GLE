@@ -59,7 +59,7 @@ public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 			ResultSet resultSet = prepareStat.executeQuery();
 			while (resultSet != null && resultSet.next()) {
 				AccountDetails details = new AccountDetails();
-				details.setAccoutNumber(resultSet.getString("ACCOUNTNUMBER"));
+				details.setAccountNumber(resultSet.getString("ACCOUNTNUMBER"));
 				details.setBranchCode(resultSet.getString("BANCHCODE"));
 				details.setCountry(resultSet.getString("COUNTRYCODE"));
 				listAcctDetails.add(details);
@@ -87,13 +87,12 @@ public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 		List<AccountDetails> listAcctDetails = new ArrayList<AccountDetails>();
 		try {
 			con = dataSource.getConnection();
-			prepareStat = con.prepareStatement(
-					"SELECT * FROM GROUP_ID_CONFIG where GROUPID = ? ");
+			prepareStat = con.prepareStatement("SELECT * FROM GROUP_ID_CONFIG where GROUPID = ? ");
 			prepareStat.setString(1, groupId);
 			ResultSet resultSet = prepareStat.executeQuery();
 			while (resultSet != null && resultSet.next()) {
 				AccountDetails details = new AccountDetails();
-				details.setAccoutNumber(resultSet.getString("ACCOUNTNUMBER"));
+				details.setAccountNumber(resultSet.getString("ACCOUNTNUMBER"));
 				details.setBranchCode(resultSet.getString("BRANCH"));
 				listAcctDetails.add(details);
 			}
