@@ -12,4 +12,6 @@ public interface GlobalLiquidEngineDAO {
 	void accountList(String clinetName);
 
 	List<AccountDetails> getAccountListByClinetName(String clinetName);
+
+	List<AccountDetails> getAccountListInGroup(String groupId);
 }

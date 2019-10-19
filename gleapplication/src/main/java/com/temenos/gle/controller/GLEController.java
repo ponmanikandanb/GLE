@@ -28,6 +28,14 @@ public class GLEController {
 		accountList.addAll(gleDAO.getAccountListByClinetName(clinetName));
 		return accountList;
 	}
+
+	@GetMapping("/userAccount")
+	@ResponseBody
+	List<AccountDetails> gerUserAccount(@RequestParam String groupId) {
+		List<AccountDetails> accountList = new ArrayList<AccountDetails>();
+		accountList.addAll(gleDAO.getAccountListInGroup(groupId));
+		return accountList;
+	}
 	/*
 	 * // Find
 	 * 
