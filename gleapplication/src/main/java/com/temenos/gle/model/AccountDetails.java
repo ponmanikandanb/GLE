@@ -1,4 +1,4 @@
-package com.temenos.gle;
+package com.temenos.gle.model;
 
 public class AccountDetails {
 
