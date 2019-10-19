@@ -1,6 +1,9 @@
 package com.temenos.gle.dao;
 
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Collection;
 
 import javax.sql.DataSource;
 
@@ -14,6 +17,7 @@ import com.temenos.gle.model.AccountDetails;
 public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 
 	JdbcTemplate jdbcTemplate;
+	DataSource dataSource;
 
 	/*
 	 * private final String SQL_FIND_PERSON = "select * from people where id = ?";
@@ -26,6 +30,7 @@ public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 	 */
 	@Autowired
 	public GlobalLiquidEngineDAOImpl(DataSource dataSource) {
+		dataSource=dataSource;
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
@@ -33,6 +38,29 @@ public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 	public String getAll() {
 		return "Test JPA";
 	}
+
+	@Override
+	public void accountList(String clinetName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Collection<AccountDetails> getAccountListByClinetName(String clinetName) {/*
+		Connection con = null;
+		PreparedStatement prepareStat = null;
+		try {
+			con =dataSource.getConnection();
+			prepareStat = con.prepareStatement("SELECT * FROM GLOBAL_BANK_ACCOUNTDETAILS where CLIENTNAME like %?%");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			con.close();
+		}
+		return null;
+	*/return null;}
 	
 
 }

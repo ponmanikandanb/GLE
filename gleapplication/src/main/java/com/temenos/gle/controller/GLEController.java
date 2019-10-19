@@ -1,18 +1,15 @@
 package com.temenos.gle.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-
-import com.temenos.gle.dao.GLEDataRepository;
-import com.temenos.gle.dao.GlobalLiquidEngineDAO;
-import com.temenos.gle.model.AccountDetails;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.temenos.gle.dao.GlobalLiquidEngineDAO;
+import com.temenos.gle.model.AccountDetails;
 
 @Controller
 public class GLEController {
@@ -23,6 +20,12 @@ public class GLEController {
 	@Autowired
 	private GlobalLiquidEngineDAO gleDAO;
 
+	@GetMapping("/AccountList")
+	List<AccountDetails> findAccountsByClinetName(@RequestParam String clinetName) {
+		List accountList = new ArrayList<AccountDetails>();
+		accountList.addAll(gleDAO.getAccountListByClinetName(clinetName));
+		return accountList;
+	}
 	/*
 	 * // Find
 	 * 

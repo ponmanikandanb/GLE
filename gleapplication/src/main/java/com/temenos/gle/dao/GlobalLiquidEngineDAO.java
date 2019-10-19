@@ -1,10 +1,12 @@
 package com.temenos.gle.dao;
 
-import java.util.List;
-
-import com.temenos.gle.model.AccountDetails;
+import java.util.Collection;
 
 public interface GlobalLiquidEngineDAO {
 
 	String  getAll();
+
+	void accountList(String clinetName);
+
+	Collection getAccountListByClinetName(String clinetName);
 }
