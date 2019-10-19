@@ -2,8 +2,11 @@ package com.temenos.gle.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -30,7 +33,7 @@ public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 	 */
 	@Autowired
 	public GlobalLiquidEngineDAOImpl(DataSource dataSource) {
-		dataSource=dataSource;
+		this.dataSource=dataSource;
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
@@ -46,21 +49,36 @@ public class GlobalLiquidEngineDAOImpl implements GlobalLiquidEngineDAO {
 	}
 
 	@Override
-	public Collection<AccountDetails> getAccountListByClinetName(String clinetName) {/*
+	public List<AccountDetails> getAccountListByClinetName(String clinetName) {
 		Connection con = null;
 		PreparedStatement prepareStat = null;
+		List<AccountDetails> listAcctDetails = new ArrayList<AccountDetails>();
 		try {
 			con =dataSource.getConnection();
-			prepareStat = con.prepareStatement("SELECT * FROM GLOBAL_BANK_ACCOUNTDETAILS where CLIENTNAME like %?%");
-			
+			prepareStat = con.prepareStatement("SELECT * FROM GLOBAL_BANK_ACCOUNTDETAILS where CLIENTNAME like '%"+clinetName+"%'");
+			ResultSet resultSet = prepareStat.executeQuery();
+			while(resultSet!= null && resultSet.next()) {
+				AccountDetails details = new AccountDetails();
+				details.setAccoutNumber(resultSet.getString("ACCOUNTNUMBER"));
+				details.setBranchCode(resultSet.getString("BANCHCODE"));
+				details.setCountry(resultSet.getString("COUNTRYCODE"));
+				listAcctDetails.add(details);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			con.close();
+		} finally {			
+			try {
+				con.close();
+				prepareStat.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
-		return null;
-	*/return null;}
+		return listAcctDetails;
+	}
 	
 
 }

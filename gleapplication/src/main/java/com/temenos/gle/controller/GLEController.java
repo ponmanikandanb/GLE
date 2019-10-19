@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.temenos.gle.dao.GlobalLiquidEngineDAO;
 import com.temenos.gle.model.AccountDetails;
@@ -21,8 +22,9 @@ public class GLEController {
 	private GlobalLiquidEngineDAO gleDAO;
 
 	@GetMapping("/AccountList")
+	@ResponseBody
 	List<AccountDetails> findAccountsByClinetName(@RequestParam String clinetName) {
-		List accountList = new ArrayList<AccountDetails>();
+		List<AccountDetails> accountList = new ArrayList<AccountDetails>();
 		accountList.addAll(gleDAO.getAccountListByClinetName(clinetName));
 		return accountList;
 	}
