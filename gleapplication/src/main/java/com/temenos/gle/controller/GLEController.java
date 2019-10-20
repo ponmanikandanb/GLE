@@ -1,7 +1,12 @@
 package com.temenos.gle.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,9 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.temenos.gle.dao.GlobalLiquidEngineDAO;
 import com.temenos.gle.model.AccountDetails;
 
@@ -24,6 +26,47 @@ public class GLEController {
 	 */
 	@Autowired
 	private GlobalLiquidEngineDAO gleDAO;
+	
+	Map<String,String> dummyValue=new HashMap<String,String>();
+    @PostConstruct
+    public void initialize(){
+        dummyValue.put("Hi","hello how can I help you");
+        dummyValue.put("How are you?","I am good.What about you");
+     
+        dummyValue.put("I need to change my mobile number", "pls fill this form and give it to our clerk,your request will be updated in 2 to 3 working days");
+        dummyValue.put("I need to know when I will get my maturity amount for this account","We will check and let you know sir");
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/process")
+    @ResponseBody
+    public String processRequestMessage(@RequestParam String request){
+        String response=null;
+        if(Pattern.matches("[A-Za-z0-9]*hi[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
+           response=dummyValue.get("Hi");
+           }
+        if(Pattern.matches("[A-Za-z0-9]*hello[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
+            response=dummyValue.get("Hi");
+            }
+        if(Pattern.matches("[A-Za-z0-9]*balance[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
+          response = "your balance is Rs.4000";
+        }
+        if(Pattern.matches("[A-Za-z0-9]*change[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
+            response=dummyValue.get("I need to change my mobile number");
+        }
+
+        if(Pattern.matches("[A-Za-z0-9]*hey[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
+            response=dummyValue.get("Hi");
+        }
+        
+        if(Pattern.matches("[A-Za-z0-9]*maturity[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
+            response=dummyValue.get("I need to know when I will get my maturity amount for this account");
+        }
+        
+        return response;
+                 
+                 
+    }
 
 	@CrossOrigin(origins = "*")
 	@GetMapping("/AccountList")
