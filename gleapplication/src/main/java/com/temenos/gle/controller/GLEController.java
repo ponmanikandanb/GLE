@@ -35,6 +35,7 @@ public class GLEController {
      
         dummyValue.put("I need to change my mobile number", "pls fill this form and give it to our clerk,your request will be updated in 2 to 3 working days");
         dummyValue.put("I need to know when I will get my maturity amount for this account","We will check and let you know sir");
+        dummyValue.put("thank you", "Welcome.Have a nice Day");
     }
 
     @CrossOrigin(origins = "*")
@@ -62,6 +63,11 @@ public class GLEController {
         if(Pattern.matches("[A-Za-z0-9]*maturity[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
             response=dummyValue.get("I need to know when I will get my maturity amount for this account");
         }
+        if(Pattern.matches("[A-Za-z0-9]*thank[A-Za-z0-9]*", request.toLowerCase().trim().replace(" ",""))){
+            response=dummyValue.get("thank you");
+        }
+        
+        
         
         return response;
                  
