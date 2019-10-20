@@ -1,5 +1,7 @@
 <?php
 
+$db = mysqli_connect("localhost","root","","codex");
+
 $user_name = $_POST["user_name"];
 $pass_word = $_POST["pass_word"];
 $category = $_POST["category"];

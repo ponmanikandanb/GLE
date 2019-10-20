@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 
 <head>
@@ -16,8 +20,12 @@
 
 <script>
     $(document).ready(function() {
+        var SGD = 0.73;
+        var JPY = 0.0092;
+        var INR = 0.014;
+
         var i = 0;
-        var txt = 'Hey Sony!';
+        var txt = "Hey " + "<?php echo $_SESSION["username"]; ?>" + "!";
         var speed = 500;
 
         typeWriter();
@@ -29,6 +37,41 @@
                 setTimeout(typeWriter, speed);
             }
         }
+
+        $("#allbranchesdata").on("click", function() {
+            var currency_code = document.getElementById("currency_code").value;
+            var table = $("#balancedata table tbody");
+            var total_amount = 0;
+            table.find('tr').each(function(i, el) {
+                var $tds = $(this).find('td'),
+                    amount = $tds.eq(2).text(),
+                    currency = $tds.eq(3).text();
+                if (currency == "SGD") {
+                    amount = amount * SGD;
+                } else if (currency == "JPY") {
+                    amount = amount * JPY;
+                } else if (currency == "INR") {
+                    amount = amount * JPY;
+                }
+                var rowid = "rowid" + i;
+                document.getElementById(rowid).innerHTML = amount;
+                total_amount = total_amount + amount;
+            });
+
+            document.getElementById("rowid4").innerHTML = total_amount;
+
+        });
+
+        var urlAccountList = "http://10.93.27.18:8888/getXERates";
+        $.ajax({
+            type: "GET",
+            url: urlAccountList,
+            success: function(data) {
+                document.getElementById("customerdata").innerHTML = data;
+            }
+        });
+
+        document.getElementById("customerdata").innerHTML = htmldata;
 
     });
 </script>
@@ -51,7 +94,7 @@
 
     .login-form-2 {
         padding: 5%;
-        background: #0062cc;
+        background: #003e75;
         box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
     }
 
@@ -102,8 +145,31 @@
         <div class="row login-form-1">
             <h1 id="name"></h1>
             <p class="page-description">Here is the list of your holdings in multiple banks across branches</p>
-
             <h3 class="no-browser-support">Sorry, Your Browser Doesn't Support the Web Speech API. Try Opening This Demo In Google Chrome.</h3>
+            <hr>
+            <div id="balancedata" class="container">
+                <table class="table" id="customer">
+                    <thead>
+                        <tr>
+                            <th>Branch</th>
+                            <th>Country</th>
+                            <th>Balance</th>
+                            <th>Currency</th>
+                            <th>Converted Balance</th>
+                            <th>
+                                <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate="Enter group id">
+                                    <input placeholder="Currency Code" class="input100" type="text" name="currency_code" id="currency_code">
+                                </div>
+                                <button id="allbranchesdata" class="login100-form-btn">
+                                    Convert Amount
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerdata">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="container login-container">
