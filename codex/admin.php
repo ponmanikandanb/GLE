@@ -27,13 +27,17 @@ session_start();
 <script>
     $(document).ready(function() {
 
+        var SGD = 0.73;
+        var JPY = 0.0092;
+        var INR = 0.014;
+
         $("#accounts").hide();
         $("#group").hide();
 
         $("#account_name").on("keyup", function() {
             var value = $(this).val().toUpperCase();
             if (value.length > 3) {
-                var urlAccountList = "http://10.93.27.34:8888/AccountList?clientName=" + value;
+                var urlAccountList = "http://10.93.27.18:8888/AccountList?clientName=" + value;
                 alert(urlAccountList);
                 $.ajax({
                     type: "GET",
@@ -75,9 +79,11 @@ session_start();
         $("#register").on("click", function() {
             event.preventDefault();
 
-            var user_name = document.getElementById("user_name");
-            var pass_word = document.getElementById("pass_word");
-            var category = document.getElementById("category");
+            var user_name = document.getElementById("user_name").value;
+            var pass_word = document.getElementById("pass_word").value;
+            var category = document.getElementById("category").value;
+
+            alert(user_name);
 
             $.ajax({
                 type: "POST",
@@ -109,7 +115,7 @@ session_start();
                 }
             });
 
-            var urlAccountList = "http://10.93.27.34:8888/saveGroup?accountDetails=" + result;
+            var urlAccountList = "http://10.93.27.18:8888/saveGroup?accountDetails=" + result;
 
             alert(urlAccountList);
 
@@ -125,7 +131,7 @@ session_start();
 
         $("#search_group_details").on("click", function() {
             var group_id = document.getElementById("groupid").value;
-            var urlAccountList = "http://10.93.27.34:8888/userAccountInGroup?groupId=" + group_id;
+            var urlAccountList = "http://10.93.27.18:8888/userAccountInGroup?groupId=" + group_id;
             alert(urlAccountList);
             $.ajax({
                 type: "GET",
@@ -155,6 +161,39 @@ session_start();
                     alert("Done");
                 }
             });
+        });
+
+        $("#threshold_by_all_branches").on("click", function() {
+            var currency_code = document.getElementById("currency_code").value;
+            var table = $("#balancedata table tbody");
+            var total_amount = 0;
+            table.find('tr').each(function(i, el) {
+                var $tds = $(this).find('td'),
+                    amount = $tds.eq(2).text(),
+                    currency = $tds.eq(3).text();
+                if (currency == "SGD") {
+                    amount = amount * SGD;
+                } else if (currency == "JPY") {
+                    amount = amount * JPY;
+                } else if (currency == "INR") {
+                    amount = amount * JPY;
+                }
+                var rowid = "rowid" + i;
+                document.getElementById(rowid).innerHTML = amount;
+                total_amount = total_amount + amount;
+            });
+
+            document.getElementById("rowid6").innerHTML = total_amount;
+
+        });
+
+        var urlAccountList = "http://10.93.27.18:8888/getXERatesAdmin";
+        $.ajax({
+            type: "GET",
+            url: urlAccountList,
+            success: function(data) {
+                document.getElementById("thresholddata").innerHTML = data;
+            }
         });
     });
 
@@ -225,7 +264,7 @@ session_start();
 
                     <hr>
 
-                    <div id="accountvalues" class="container">
+                    <div class="container">
                         <table class="table" id="group">
                             <thead>
                                 <tr>
@@ -244,6 +283,40 @@ session_start();
             </form>
         </div>
     </div>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-b-20">
+                <form class="login100-form validate-form">
+                    <span class="login100-form-title p-b-70">
+                        Threshold By All Branches
+                    </span>
+                    <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate="Enter group id">
+                        <input placeholder="Currency Code" class="input100" type="text" name="currency_code" id="currency_code">
+                    </div>
+                    <button id="threshold_by_all_branches" class="login100-form-btn">
+                        Convert Amount
+                    </button>
+                    <hr>
+                    <div id="balancedata" class="container">
+                        <table class="table" id="threshold">
+                            <thead>
+                                <tr>
+                                    <th>Branch Code</th>
+                                    <th>Branch Country</th>
+                                    <th>Amount</th>
+                                    <th>Currency</th>
+                                    <th>Converted Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="thresholddata">
+                            </tbody>
+                        </table>
+
+                    </div>
+            </div>
+            </form>
+        </div>
     </div>
 
     <div class="limiter">
@@ -254,13 +327,13 @@ session_start();
                         User Registration
                     </span>
                     <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate="Enter group id">
-                        <input placeholder="Username" class="input100" type="text" name="user_name">
+                        <input placeholder="Username" class="input100" type="text" id="user_name" name="user_name">
                     </div>
                     <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate="Enter group id">
-                        <input placeholder="Password" class="input100" type="text" name="pass_word">
+                        <input placeholder="Password" class="input100" type="password" id="pass_word" name="pass_word">
                     </div>
                     <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate="Enter group id">
-                        <input placeholder="Category" class="input100" type="text" name="category">
+                        <input placeholder="Category" class="input100" type="text" id="category" name="category">
                     </div>
                     <button id="register" class="login100-form-btn">
                         Register

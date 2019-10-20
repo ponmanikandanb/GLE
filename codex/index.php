@@ -50,7 +50,7 @@
             display: inline-block;
             margin-right: 30px;
             font-size: 5em;
-            color: #375ffb;
+            color: #003e75;
             opacity: 1;
             transition: all 2s ease;
         }
@@ -91,6 +91,10 @@
         }
 
         .welcome-section.content-hidden .content-wrap .fly-in-text li:nth-child(5) {
+            transform: translate3d(-100px, 0, 0);
+        }
+
+        .welcome-section.content-hidden .content-wrap .fly-in-text li:nth-child(6) {
             transform: translate3d(100px, 0, 0);
         }
 
@@ -101,11 +105,11 @@
 
         @media (min-width: 800px) {
             .welcome-section .content-wrap .fly-in-text li {
-                font-size: 7em;
+                font-size: 5em;
             }
 
             .welcome-section .content-wrap .enter-button {
-                font-size: 1.5em;
+                font-size: 0.5em;
             }
         }
     </style>
@@ -116,11 +120,13 @@
     <div class="welcome-section content-hidden">
         <div class="content-wrap">
             <ul class="fly-in-text">
-                <li>C</li>
-                <li>O</li>
-                <li>D</li>
+                <li>T</li>
                 <li>E</li>
-                <li>X</li>
+                <li>M</li>
+                <li>E</li>
+                <li>N</li>
+                <li>O</li>
+                <li>S</li>
             </ul>
         </div>
     </div>
