@@ -1,12 +1,11 @@
 package com.temenos.gle.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.temenos.gle.model.AccountDetails;
 
 public interface GlobalLiquidEngineDAO {
-
-	String  getAll();
 
 	void accountList(String clinetName);
 
@@ -15,4 +14,9 @@ public interface GlobalLiquidEngineDAO {
 	List<AccountDetails> getAccountListInGroup(String groupId);
 
 	void saveGoup(List<AccountDetails> accountList);
+	
+	boolean insertIntoCodexData(List<String> codexData) throws SQLException;
+	
+	Double getBalance(String accountNumber,String companyId); 
+
 }

@@ -7,26 +7,18 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.temenos.gle.config.AppConfig;
 import com.temenos.gle.dao.GlobalLiquidEngineDAO;
+import com.temenos.gle.data.ProcessT24Data;
 
 @SpringBootApplication
 public class StartGLEApplication {
-	static AnnotationConfigApplicationContext  context;
-    // start everything
-    public static void main(String[] args) {
-		/*
-		 * ApplicationContext context = new
-		 * ClassPathXmlApplicationContext("gle-spring-context.xml");
-		 * SpringApplication.run(StartGLEApplication.class, args);
-		 */
-    	
-        context = new AnnotationConfigApplicationContext(AppConfig.class);
+	
+    public static void main(String[] args) throws Exception {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 		GlobalLiquidEngineDAO gleDAO = context.getBean(GlobalLiquidEngineDAO.class);
-		System.out.println(gleDAO.getAll());
+		// Feed the data
+		gleDAO.insertIntoCodexData(ProcessT24Data.getData());
+		// Get the balance
+		System.out.println("Balance of 77507 :"+ gleDAO.getBalance("77507", "BNK"));
 		SpringApplication.run(StartGLEApplication.class, args);
     }
-    
-    public static ApplicationContext getApplicationContext() {
-        return context;
-    }
-    
 }
